@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Feliz Dia dos Namorados</title>
+
+  <!-- Fonte Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Segoe+UI&display=swap" rel="stylesheet" />
+
+  <style>
+    /* Reset e básicos */
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #fff0f5;
+      color: #333;
+      text-align: center;
+      overflow-x: hidden;
+      transition: background-color 0.5s, color 0.5s;
+      position: relative;
+      min-height: 100vh;
+      padding-bottom: 150px; /* espaço para o footer */
+    }
+    /* Tema escuro */
+    body.dark {
+      background: #2a1a2f;
+      color: #ffd1dc;
+    }
+
+    /* Header */
+    header {
+      background-color: #ff69b4;
+      color: white;
+      padding: 2rem 1rem;
+      font-family: 'Great Vibes', cursive;
+      font-size: 3.5rem;
+      text-shadow: 0 0 8px #ffb6c1, 0 0 15px #ff69b4;
+      user-select: none;
+      margin-bottom: 0.5rem;
+    }
+    header p {
+      font-size: 1.2rem;
+      font-family: 'Segoe UI', sans-serif;
+      text-shadow: 0 0 5px #d63384;
+      margin-top: 0;
+    }
+
+    /* Contador */
+    .counter {
+      font-size: 1.5rem;
+      margin: 1rem auto;
+      color: #d63384;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      font-weight: 600;
+      user-select: none;
+    }
+    .heart {
+      animation: pulse 1.5s infinite;
+      color: red;
+      font-size: 2rem;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.3); }
+      100% { transform: scale(1); }
+    }
+
+    /* Máquina de escrever */
+    .message {
+      padding: 2rem 1rem;
+      font-size: 1.25rem;
+      max-width: 700px;
+      margin: 1rem auto 2rem auto;
+      min-height: 100px;
+      white-space: pre-wrap;
+      border-left: 3px solid #ff69b4;
+      animation: blinkCaret 0.75s step-end infinite;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    @keyframes blinkCaret {
+      from, to { border-color: transparent; }
+      50% { border-color: #ff69b4; }
+    }
+
+    /* Footer */
+    footer {
+      background-color: #ffb6c1;
+      color: #333;
+      padding: 1rem;
+      font-size: 0.9rem;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      user-select: none;
+    }
+    body.dark footer {
+      background-color: #461337;
+      color: #ffd1dc;
+    }
+
+    /* Botão */
+    button {
+      background-color: #ff69b4;
+      color: white;
+      border: none;
+      padding: 0.7rem 1.5rem;
+      border-radius: 50px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      box-shadow: 0 0 12px #ff69b4;
+      transition: background-color 0.3s, box-shadow 0.3s, transform 0.2s;
+      user-select: none;
+      margin: 10px auto;
+      display: block;
+      width: 180px;
+    }
+    button:hover {
+      background-color: #d63384;
+      box-shadow: 0 0 20px #d63384;
+      transform: scale(1.1);
+    }
+
+    /* Controles de áudio */
+    .audio-controls {
+      margin: 1rem;
+    }
+
+    /* Carrossel simples */
+    .carousel {
+      max-width: 320px;
+      margin: 20px auto 40px auto;
+      position: relative;
+      overflow: hidden;
+      border-radius: 15px;
+      box-shadow: 0 0 15px #ff69b4;
+      user-select: none;
+    }
+    .carousel img {
+      width: 100%;
+      display: none;
+      border-radius: 15px;
+    }
+    .carousel img.active {
+      display: block;
+      animation: fadeIn 1s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+    .carousel-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 10px;
+    }
+    .carousel-buttons button {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      padding: 0;
+      font-size: 1.5rem;
+      line-height: 1;
+    }
+
+    /* Confetes */
+    .confetti {
+      pointer-events: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+      z-index: 9999;
+    }
+    .confetti-piece {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background-color: #ff69b4;
+      opacity: 0.8;
+      border-radius: 50%;
+      animation-name: confetti-fall, confetti-spin;
+      animation-duration: 5s, 3s;
+      animation-iteration-count: infinite;
+      animation-timing-function: linear;
+    }
+    @keyframes confetti-fall {
+      0% { transform: translateY(-10px); opacity: 1; }
+      100% { transform: translateY(100vh); opacity: 0; }
+    }
+    @keyframes confetti-spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Fundo corações */
+    .heart-bg {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: visible;
+      z-index: 0;
+    }
+    .heart-bg svg {
+      position: absolute;
+      bottom: -40px;
+      fill: #ff69b4cc;
+      animation-name: heart-rise;
+      animation-timing-function: ease-in-out;
+      animation-iteration-count: infinite;
+    }
+    @keyframes heart-rise {
+      0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
+      100% { transform: translateY(-400px) rotate(360deg) scale(1.5); opacity: 0; }
+    }
+
+    /* Tema escuro botão */
+    #themeToggle {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      background: #ff69b4;
+      border-radius: 50%;
+      width: 45px;
+      height: 45px;
+      font-size: 1.8rem;
+      color: white;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 0 10px #ff69b4;
+      user-select: none;
+      transition: background-color 0.3s;
+      z-index: 10000;
+    }
+    #themeToggle:hover {
+      background-color: #d63384;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Botão tema escuro/claro -->
+  <button id="themeToggle" title="Alternar Tema">🌙</button>
+
+  <header>Feliz Dia dos Namorados!</header>
+  <p>Uma homenagem especial para nós dois ❤️</p>
+
+  <section class="counter">
+    <span class="heart">❤️</span>
+    <span id="daysTogether"></span>
+    <span>dias juntos</span>
+  </section>
+
+  <section class="audio-controls">
+    <iframe width="300" height="80" scrolling="no" frameborder="no" allow="autoplay"
+      src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/wsounds-matheus-e-kauan/que-sorte-a-nossa&color=%23ff69b4&inverse=false&auto_play=false&show_user=true">
+    </iframe>
+  </section>
+
+  <!-- Carrossel simples -->
+  <section class="carousel" aria-label="Fotos do casal">
+    <img src="images/WhatsApp Image 2025-06-11 at 10.03.01.jpeg" alt="Foto 1 do casal" class="active" />
+    <img src="images/WhatsApp Image 2025-06-11 at 10.03.54.jpeg" alt="Foto 2 do casal" />
+    <img src="images/WhatsApp Image 2025-06-11 at 10.03.55.jpeg" alt="Foto 3 do casal" />
+    <div class="carousel-buttons">
+      <button id="prev" aria-label="Foto anterior">‹</button>
+      <button id="next" aria-label="Próxima foto">›</button>
+    </div>
+  </section>
+
+  <!-- Mensagem com efeito máquina de escrever -->
+  <section class="message" id="message"></section>
+
+  <footer>
+    Criado com amor ❤️ - Dia dos Namorados 2025
+  </footer>
+
+  <!-- Fundo com corações animados -->
+  <div class="heart-bg" aria-hidden="true"></div>
+
+  <!-- Confetes -->
+  <div class="confetti" aria-hidden="true"></div>
+
+  <script>
+    // Cálculo dias juntos
+    const startDate = new Date("2024-11-29");
+    const today = new Date();
+    const timeDiff = today - startDate;
+    const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+    document.getElementById("daysTogether").textContent = days;
+
+    // Máquina de escrever para mensagem
+    const messageText = `Desde o dia em que te conheci, minha vida mudou para melhor. Cada momento ao seu lado é uma nova história cheia de amor e alegria. Feliz Dia dos Namorados, meu amor! Saiba que você é incrível, carinhoso, divertido e que eu estou muito feliz ao seu lado. Você é a razão da minha felicidade, saiba que sou incrivelmente feliz ao seu lado barraqueiro!! E prometo melhorar cada dia por nós!!`;
+
+    const messageEl = document.getElementById("message");
+    let i = 0;
+    function typeWriter() {
+      if (i < messageText.length) {
+        messageEl.textContent += messageText.charAt(i);
+        i++;
+        setTimeout(typeWriter, 45);
+      }
+    }
+    typeWriter();
+
+    // Carrossel simples
+    const images = document.querySelectorAll('.carousel img');
+    let currentIndex = 0;
+    const prevBtn = document.getElementById('prev');
+    const nextBtn = document.getElementById('next');
+
+    function showImage(index) {
+      images.forEach((img, i) => {
+        img.classList.toggle('active', i === index);
+      });
+    }
+    prevBtn.addEventListener('click', () => {
+      currentIndex = (currentIndex - 1 + images.length) % images.length;
+      showImage(currentIndex);
+    });
+    nextBtn.addEventListener('click', () => {
+      currentIndex = (currentIndex + 1) % images.length;
+      showImage(currentIndex);
+    });
+
+    // Tema escuro / claro
+    const themeToggle = document.getElementById('themeToggle');
+    themeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('dark');
+      if (document.body.classList.contains('dark')) {
+        themeToggle.textContent = '☀️';
+      } else {
+        themeToggle.textContent = '🌙';
+      }
+    });
+
+    // Fundo corações animados
+    const heartBg = document.querySelector('.heart-bg');
+    const heartSVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="30" height="30"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>`;
+
+    function createHeart() {
+      const heart = document.createElement('div');
+      heart.innerHTML = heartSVG;
+      heart.style.position = 'absolute';
+      heart.style.left = Math.random() * window.innerWidth + 'px';
+      heart.style.bottom = '-40px';
+      heart.style.fill = `rgba(255, 105, 180, ${Math.random() * 0.6 + 0.4})`;
+      heart.style.width = `${15 + Math.random() * 15}px`;
+      heart.style.height = heart.style.width;
+      heart.style.animationDuration = `${4 + Math.random() * 4}s`;
+      heart.style.animationDelay = `0s`;
+      heart.style.animationName = 'heart-rise';
+      heart.style.animationTimingFunction = 'ease-in-out';
+      heart.style.animationIterationCount = 'infinite';
+      heart.style.transformOrigin = 'center';
+      heartBg.appendChild(heart);
+
+      setTimeout(() => {
+        heart.remove();
+      }, 8000);
+    }
+
+    setInterval(createHeart, 500);
+
+    // Confetes animados
+    const confettiContainer = document.querySelector('.confetti');
+    const colors = ['#ff69b4', '#d63384', '#ffb6c1', '#ff1493'];
+
+    function createConfetti() {
+      const confetti = document.createElement('div');
+      confetti.classList.add('confetti-piece');
+      confetti.style.left = Math.random() * window.innerWidth + 'px';
+      confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+      confetti.style.animationDuration = 3 + Math.random() * 3 + 's';
+      confetti.style.width = 8 + Math.random() * 7 + 'px';
+      confetti.style.height = confetti.style.width;
+      confetti.style.borderRadius = Math.random() > 0.5 ? '0' : '50%';
+      confetti.style.opacity = 0.8;
+      confettiContainer.appendChild(confetti);
+
+      setTimeout(() => {
+        confetti.remove();
+      }, 6000);
+    }
+
+    setInterval(createConfetti, 250);
+
+  </script>
+</body>
+</html>
